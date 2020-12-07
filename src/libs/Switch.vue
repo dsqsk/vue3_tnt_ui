@@ -1,19 +1,21 @@
 <template>
-  <button @click="toggle" :class="{ state }">
+  <button @click="toggle" :class="{ state: value }">
     <span></span>
   </button>
+  <div>{{ value }}</div>
 </template>
 
 <script lang="ts">
 import { ref } from 'vue'
 export default {
-  setup() {
-    const state = ref(false)
+  props: {
+    value: Boolean
+  },
+  setup(props, context) {
     const toggle = () => {
-      state.value = !state.value
+      context.emit('input', !props.value)
     }
     return {
-      state,
       toggle
     }
   }
@@ -39,12 +41,15 @@ span {
   width: $h2;
   background: white;
   border-radius: $h2 / 2;
-  transition: left 1s;
+  transition: left 250ms;
 }
 button.state {
   background: blue;
 }
 button.state span {
   left: calc(100% - #{$h2} - 2px);
+}
+button:focus {
+  outline: none;
 }
 </style>
